@@ -1,0 +1,18 @@
+[project]
+name = "TrinX-AI-chatbot-Premium"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.27",
+    "langchain-groq>=0.3.6",
+    "langchain-tavily>=0.2.11",
+    "langgraph>=0.5.4",
+    "pydantic>=2.11.7",
+    "python-dotenv>=1.1.1",
+    "pyyaml>=6.0.2",
+    "ruff>=0.12.5",
+    "streamlit>=1.47.1",
+]

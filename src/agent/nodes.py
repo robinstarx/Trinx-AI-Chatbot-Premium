@@ -18,7 +18,7 @@ from src.core.state import (
 from src.tools.fetch_coin_price import fetch_coin_price_tool
 from src.tools.serper_web_search import web_search_tool
 from src.core.state_manager import clear_context_fields
-from src.prompts.prompt_import import (
+from src.prompts.config.prompt_import import (
     router_prompt,
     fetch_price_prompt,
     trinity_info_prompt,

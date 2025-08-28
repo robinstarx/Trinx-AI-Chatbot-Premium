@@ -5,8 +5,11 @@ from src.core.state import AgentState
 # ── LOGGING ─────────────────────────────────────────────────────────────
 logger = logging.getLogger(__name__)
 
+
 # ── Routing helpers ─────────────────────────────────────────────────
-def route_intent(st: AgentState) -> Literal["fetch_price","web", "answer", "trinity_coin_details", "end"]:
+def route_intent(
+    st: AgentState,
+) -> Literal["fetch_price", "web", "answer", "trinity_coin_details", "end"]:
     route = st["route"]
     logger.info(f"Routing from router: {route}")
     return route

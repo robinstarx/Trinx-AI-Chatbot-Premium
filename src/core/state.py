@@ -60,6 +60,7 @@ class FetchCoinPriceDecision(BaseModel):
 class AgentState(TypedDict, total=False):
     messages: List[BaseMessage]
     route:    Literal["web","fetch_price","answer", "trinity_coin_details", "end"]
+    previous_route: Literal["web","fetch_price","answer", "trinity_coin_details", "end"]
     web_results:str
     price:float
     trinity_info:str

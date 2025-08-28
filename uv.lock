@@ -219,6 +219,20 @@ wheels = [
 ]
 
 [[package]]
+name = "fastapi"
+version = "0.116.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/78/d7/6c8b3bfe33eeffa208183ec037fee0cce9f7f024089ab1c5d12ef04bd27c/fastapi-0.116.1.tar.gz", hash = "sha256:ed52cbf946abfd70c5a0dccb24673f0670deeb517a88b3544d03c2a6bf283143", size = 296485, upload-time = "2025-07-11T16:22:32.057Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/47/d63c60f59a59467fda0f93f46335c9d18526d7071f025cb5b89d5353ea42/fastapi-0.116.1-py3-none-any.whl", hash = "sha256:c46ac7c312df840f0c9e220f7964bada936781bc4e2e6eb71f1c4d7553786565", size = 95631, upload-time = "2025-07-11T16:22:30.485Z" },
+]
+
+[[package]]
 name = "frozenlist"
 version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -718,6 +732,24 @@ wheels = [
 ]
 
 [[package]]
+name = "ngrok"
+version = "1.5.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/9f/03b512118b442830d3847df6d9da87f76c91e028eb6b0b96a7c636bad1b6/ngrok-1.5.1-cp310-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:167828a97cfb71942665bc7c156f566045061c73be52f4b3d24403a4e24a03c0", size = 7193447, upload-time = "2025-08-05T22:02:13.032Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/b0/31e473900855b721b4f58fbe4da274582aa5831d5ee2555aea7024e2edab/ngrok-1.5.1-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:ffdb9fa30aa78fca17ee95e3fae565fe8d79c62ae3bd260dcba2d541aa76b1f2", size = 3731792, upload-time = "2025-08-05T22:00:20.385Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/75/c1f96413bfa12283f520ed37789b2e35e6152099ad2f706f279301ea3fb6/ngrok-1.5.1-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:28202e448267bf19d8f9f50f07a67fef91e390294c43c8dbd919f5fc1ab9fc9b", size = 3480094, upload-time = "2025-08-05T22:00:10.957Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/51/243f9ba16f0e8e7e8780d66abead44b6363b26ad3619026ce02d92c60ee0/ngrok-1.5.1-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:caca325e330e578a85bdde1e27044c45d5c4028adf4dbab0fb2d87971175e630", size = 5547596, upload-time = "2025-08-05T22:02:05.093Z" },
+    { url = "https://files.pythonhosted.org/packages/23/71/ad4d2252a87e14bf5aca7ef55b6adf9a0922373192b02e0ccf287efb1b3c/ngrok-1.5.1-cp310-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:affade8cd54661ec6cd41e121ba6791276841248e63b18eb0c5f7daf6f5a71f8", size = 4481126, upload-time = "2025-08-05T22:02:27.754Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/80/6b56186a3b5364e82edfbd326714d027cd6429ba5f8e16dff034026477a5/ngrok-1.5.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ac544a66b2946cc335cb46e8fdff17d9ae1dce314705f69929952eabfd75be00", size = 3822615, upload-time = "2025-08-05T22:01:38.802Z" },
+    { url = "https://files.pythonhosted.org/packages/e2/40/75e5af6c9b6c41c69f246a0e289731d889f46c974f4bcce29af5cfa6b36e/ngrok-1.5.1-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:cb7a27fceae3924d68b114f82c24a640528225a6d83a3ce5e7a13116cd9d627c", size = 3586660, upload-time = "2025-08-05T22:05:13.805Z" },
+    { url = "https://files.pythonhosted.org/packages/ec/ab/79ebdf235d52fdb9d0d8d92889e73dbb1781676355bf4c96b376415895b1/ngrok-1.5.1-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:0f04b43cbc92a027d63e64e1afca43d8b3ec063c9d2c9cdee3a7f32df7c6386a", size = 3917708, upload-time = "2025-08-05T22:06:24.702Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/a9/7c72770fafdfa849ad2ca57be60456d9b6ceb9f31eb71cb9e72044a84e60/ngrok-1.5.1-cp310-abi3-win32.whl", hash = "sha256:1118e5e3762084024e620afc5da1e99721e1897ec132ba90d3d2bec9d801d298", size = 3218534, upload-time = "2025-08-05T22:01:57.553Z" },
+    { url = "https://files.pythonhosted.org/packages/6c/2c/a0220d7d5df100a97f8b46e1a84fcedac658232d6dd329e3fee5220b09e5/ngrok-1.5.1-cp310-abi3-win_amd64.whl", hash = "sha256:6fa5da328ce57fd5e50d1f8fec685f936bf4315e08e147d0fd91fd5dafa5cac7", size = 3791822, upload-time = "2025-08-05T22:01:33.721Z" },
+    { url = "https://files.pythonhosted.org/packages/7e/d9/526d71e71cb274c74c204fcb07980f5236fa649dd6db36594ae176225adb/ngrok-1.5.1-cp310-abi3-win_arm64.whl", hash = "sha256:e24eadd6e3914e664f01bd964311c0892e59eda271d8e4bbcac7aa46fcb2587b", size = 3488917, upload-time = "2025-08-05T22:02:13.559Z" },
+]
+
+[[package]]
 name = "numpy"
 version = "2.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1067,6 +1099,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pyngrok"
+version = "7.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7b/64/e5646daaa4a84ecb368c09d42753f1c6e1a41b38579a36fda8ffe5716d9f/pyngrok-7.3.0.tar.gz", hash = "sha256:f2240e49b9dec9b27eba00f1444cd3cce7ac45d1bcc493a9b76ee63c2da9882c", size = 44266, upload-time = "2025-08-04T16:08:07.015Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ac/6b/664772910199399db3706243488eb3a986bd8435583caef9cf8359eecfaa/pyngrok-7.3.0-py3-none-any.whl", hash = "sha256:708c48276d3a887d4263f0f4bc8171e22d66df6cfa74a4857625c83160603166", size = 25394, upload-time = "2025-08-04T16:08:05.368Z" },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -1289,6 +1333,18 @@ wheels = [
 ]
 
 [[package]]
+name = "starlette"
+version = "0.47.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/15/b9/cc3017f9a9c9b6e27c5106cc10cc7904653c3eec0729793aec10479dd669/starlette-0.47.3.tar.gz", hash = "sha256:6bc94f839cc176c4858894f1f8908f0ab79dfec1a6b8402f6da9be26ebea52e9", size = 2584144, upload-time = "2025-08-24T13:36:42.122Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ce/fd/901cfa59aaa5b30a99e16876f11abe38b59a1a2c51ffb3d7142bb6089069/starlette-0.47.3-py3-none-any.whl", hash = "sha256:89c0778ca62a76b826101e7c709e70680a1699ca7da6b44d38eb0a7e61fe4b51", size = 72991, upload-time = "2025-08-24T13:36:40.887Z" },
+]
+
+[[package]]
 name = "streamlit"
 version = "1.47.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1359,30 +1415,38 @@ name = "trinx-ai-chatbot-premium"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "fastapi" },
     { name = "langchain" },
     { name = "langchain-community" },
     { name = "langchain-groq" },
     { name = "langchain-tavily" },
     { name = "langgraph" },
+    { name = "ngrok" },
     { name = "pydantic" },
+    { name = "pyngrok" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "ruff" },
     { name = "streamlit" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "fastapi", specifier = ">=0.116.1" },
     { name = "langchain", specifier = ">=0.3.27" },
     { name = "langchain-community", specifier = ">=0.3.27" },
     { name = "langchain-groq", specifier = ">=0.3.6" },
     { name = "langchain-tavily", specifier = ">=0.2.11" },
     { name = "langgraph", specifier = ">=0.5.4" },
+    { name = "ngrok", specifier = ">=1.5.1" },
     { name = "pydantic", specifier = ">=2.11.7" },
+    { name = "pyngrok", specifier = ">=7.3.0" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "ruff", specifier = ">=0.12.5" },
     { name = "streamlit", specifier = ">=1.47.1" },
+    { name = "uvicorn", specifier = ">=0.35.0" },
 ]
 
 [[package]]
@@ -1435,6 +1499,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz", hash = "sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760", size = 393185, upload-time = "2025-06-18T14:07:41.644Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/c2/fe1e52489ae3122415c51f387e221dd0773709bad6c6cdaa599e8a2c5185/urllib3-2.5.0-py3-none-any.whl", hash = "sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc", size = 129795, upload-time = "2025-06-18T14:07:40.39Z" },
+]
+
+[[package]]
+name = "uvicorn"
+version = "0.35.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "h11" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5e/42/e0e305207bb88c6b8d3061399c6a961ffe5fbb7e2aa63c9234df7259e9cd/uvicorn-0.35.0.tar.gz", hash = "sha256:bc662f087f7cf2ce11a1d7fd70b90c9f98ef2e2831556dd078d131b96cc94a01", size = 78473, upload-time = "2025-06-28T16:15:46.058Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d2/e2/dc81b1bd1dcfe91735810265e9d26bc8ec5da45b4c0f6237e286819194c3/uvicorn-0.35.0-py3-none-any.whl", hash = "sha256:197535216b25ff9b785e29a0b79199f55222193d47f820816e7da751e9bc8d4a", size = 66406, upload-time = "2025-06-28T16:15:44.816Z" },
 ]
 
 [[package]]

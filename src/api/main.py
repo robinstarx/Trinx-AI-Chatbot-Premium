@@ -7,12 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from langchain_core.messages import AIMessage, HumanMessage
 import logging
 import uuid
-
+from src.core.config import Settings
 
 from src.agent.graph import  graph_agent
 
 
 logger = logging.getLogger(__name__)
+settings = Settings()
 
 
 app = FastAPI(
@@ -41,7 +42,7 @@ class ChatResponse(BaseModel):
 
 
 
-@app.post("/api/chat-premium", response_model=ChatResponse)
+@app.post(settings.API_URL, response_model=ChatResponse)
 async def chat_premium(request: ChatRequest):
     """
     Chat endpoint that takes session_id & query, 

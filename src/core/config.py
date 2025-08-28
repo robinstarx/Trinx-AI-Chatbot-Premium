@@ -1,35 +1,47 @@
-
-
-import json
 import os
-
-from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+import logging
+
+logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 
 class Settings(BaseSettings):
     # API settings
-    API_PREFIX: str = "/api"
-    # CORS_ORIGINS: list[str] = Field(s
-    #     default_factory=list,
-    #     env="CORS_ORIGINS",
-    # )
+    API_URL: str = "/api/chat-premium"
 
-    # @field_validator("CORS_ORIGINS", mode="before")
-    # def parse_cors_origins(cls, v):
-    #     if isinstance(v, str):
-    #         try:
-    #             # First try parsing as JSON
-    #             return json.loads(v)
-    #         except json.JSONDecodeError:
-    #             # If that fails, try splitting by comma
-    #             return [origin.strip() for origin in v.split(",")]
-    #     return v
+    # LangSmith settings
+    LANGSMITH_ENDPOINT: str = os.getenv("LANGSMITH_ENDPOINT")
+    LANGSMITH_API_KEY: str = os.getenv("LANGSMITH_API_KEY")
+    LANGSMITH_PROJECT: str = os.getenv("LANGSMITH_PROJECT")
+    SERPER_API_KEY: str = os.getenv("SERPER_API_KEY")
+    TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY")
+
     # LLM settings
-    
-    
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL")
+
     class Config:
         env_file = ".env"
-        model_config = {"extra": "ignore"}
+        env_file_encoding = "utf-8"
+        extra = "ignore"
 
+
+# Initialize settings
 settings = Settings()
+try:
+    # Ensure values are in os.environ (important for LangSmith tracing)
+    logger.info("Loading environment variables...")
+    os.environ["LANGSMITH_TRACING"] = "true"
+    os.environ["LANGSMITH_ENDPOINT"] = settings.LANGSMITH_ENDPOINT
+    os.environ["LANGSMITH_API_KEY"] = settings.LANGSMITH_API_KEY
+    os.environ["LANGSMITH_PROJECT"] = settings.LANGSMITH_PROJECT
+    os.environ["SERPER_API_KEY"] = settings.SERPER_API_KEY
+    os.environ["TAVILY_API_KEY"] = settings.TAVILY_API_KEY
+    os.environ["GROQ_API_KEY"] = settings.GROQ_API_KEY
+    logger.info("Environment variables loaded successfully.")
+except Exception as e:
+    logger.error(f"Error loading environment variables: {e}")
+    raise

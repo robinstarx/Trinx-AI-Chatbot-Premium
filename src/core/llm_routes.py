@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 try:
     load_dotenv()
     os.environ["LANGSMITH_TRACING"] = 'true'
-    os.environ["LANGSMITH_ENDPOINT"] = 'https://api.smith.langchain.com'
+    os.environ["LANGSMITH_ENDPOINT"] = os.getenv('LANGSMITH_ENDPOINT')
     os.environ["LANGSMITH_API_KEY"] = os.getenv('LANGSMITH_API_KEY')
-    os.environ["LANGSMITH_PROJECT"] = 'TrinX-AI-chatbot-Premium'
+    os.environ["LANGSMITH_PROJECT"] = os.getenv('LANGSMITH_PROJECT')
     os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
     logger.info("Environment variables loaded successfully.")
 except Exception as e:
@@ -26,7 +26,7 @@ try:
     query_router_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0,api_key=os.getenv("GROQ_API_KEY")).with_structured_output(QueryDecision)
     coin_symbol_converter_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0, max_tokens=10,api_key=os.getenv("GROQ_API_KEY")).with_structured_output(FetchCoinPriceDecision)
     answer_compose_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.7,api_key=os.getenv("GROQ_API_KEY"))
-    trinity_coin_details_llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0,api_key=os.getenv("GROQ_API_KEY"))
+    trinity_coin_details_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.7,api_key=os.getenv("GROQ_API_KEY"))
     logger.info("LLM instances initialized successfully.")
 except Exception as e:
     logger.error(f"Error initializing LLM instances: {e}")

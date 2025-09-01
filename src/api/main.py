@@ -1,7 +1,7 @@
 # app/main.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from pyngrok import ngrok
+# from pyngrok import ngrok
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_core.messages import AIMessage, HumanMessage

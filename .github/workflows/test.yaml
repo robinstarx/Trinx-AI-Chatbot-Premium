@@ -38,5 +38,5 @@ jobs:
       - name: Lint code with Ruff
         run: uv run ruff check .
 
-      # - name: Run tests with pytest
-      #   run: uv run pytest -v
+      - name: Run tests with pytest
+        run: uv run pytest -v

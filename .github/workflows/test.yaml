@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  integration:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    env:   # ✅ secrets & vars available for pytest
+      GROQ_MODEL: ${{ secrets.GROQ_MODEL }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+      LANGSMITH_ENDPOINT: ${{ secrets.LANGSMITH_ENDPOINT }}
+      LANGSMITH_PROJECT: ${{ secrets.LANGSMITH_PROJECT }}
+      SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+      CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'   # stable version
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv sync --all-extras
+
+      - name: Lint code with Ruff
+        run: uv run ruff check .
+
+      # - name: Run tests with pytest
+      #   run: uv run pytest -v

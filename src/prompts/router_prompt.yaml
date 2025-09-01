@@ -48,6 +48,22 @@ router_v1:
         - "Solve 24 * 7."  
         - "What is the capital of Japan?"  
 
+    5. end  
+      - Use this route for **small talk, greetings, or light conversation**. 
+      - Use this type of reponse when the user is asking about the chatbot.
+      - Examples:  
+        - "Hi"/"Hello"/"Hey bot"
+        “What are you up to?” / “What you doing?”
+        - what is trinx ai
+        - who are you
+        - who you
+        - how are you
+        - what are you up to
+        - what's up
+        - what you doing
+        - what you up to
+
+
     -------------------
     ### IMPORTANT INSTRUCTIONS
 

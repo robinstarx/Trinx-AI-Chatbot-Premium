@@ -12,11 +12,14 @@ logger = logging.getLogger(__name__)
 try:
     load_dotenv()
     os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
-    tavily = TavilySearch(max_results=5, search_depth="advanced", include_answer="advanced")
+    tavily = TavilySearch(
+        max_results=5, search_depth="advanced", include_answer="advanced"
+    )
     logger.info("TavilySearch tool initialized successfully.")
 except Exception as e:
     logger.error(f"Error initializing TavilySearch tool: {e}")
     raise
+
 
 @tool
 def web_search_tool(query: str) -> str:
@@ -26,11 +29,15 @@ def web_search_tool(query: str) -> str:
         result = tavily.invoke({"query": query})
         answer = result.get("answer")
         if answer:
-            logger.info(f"Web search produced an answer for query: {result.get('query')}")
+            logger.info(
+                f"Web search produced an answer for query: {result.get('query')}"
+            )
             return answer
         detail = result.get("detail")
         if isinstance(detail, dict) and "error" in detail:
-            logger.warning(f"Web search returned error for query '{result.get('query')}': {detail.get('error')}")
+            logger.warning(
+                f"Web search returned error for query '{result.get('query')}': {detail.get('error')}"
+            )
             return str(detail.get("error"))
         return str(result)
     except Exception as e:

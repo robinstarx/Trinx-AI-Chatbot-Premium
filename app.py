@@ -45,13 +45,11 @@ user_input = st.chat_input(
 )
 
 if user_input:
-
     st.chat_message("user").markdown(user_input)
     logger.info(f"User question: {user_input}")
 
     user_msg = HumanMessage(content=user_input)
     st.session_state.messages.append(user_msg)
-
 
     try:
         logger.info("Invoking graph agent")
@@ -62,7 +60,9 @@ if user_input:
         logger.info("Graph agent invocation successful")
 
         # Display assistant message
-        ai_msg = next((m for m in reversed(result["messages"]) if isinstance(m, AIMessage)), None)
+        ai_msg = next(
+            (m for m in reversed(result["messages"]) if isinstance(m, AIMessage)), None
+        )
         if ai_msg:
             st.chat_message("assistant").markdown(ai_msg.content)
             st.session_state.messages.append(ai_msg)

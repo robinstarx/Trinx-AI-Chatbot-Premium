@@ -10,8 +10,12 @@ settings = Settings()
 # ── LLM instances with structured output where needed ───────────────
 try:
     logger.info("Initializing LLM instances...")
-    query_router_llm = ChatGroq(model=settings.GROQ_MODEL, temperature=0).with_structured_output(QueryDecision)
-    coin_symbol_converter_llm = ChatGroq(model=settings.GROQ_MODEL, temperature=0, max_tokens=10).with_structured_output(FetchCoinPriceDecision)
+    query_router_llm = ChatGroq(
+        model=settings.GROQ_MODEL, temperature=0
+    ).with_structured_output(QueryDecision)
+    coin_symbol_converter_llm = ChatGroq(
+        model=settings.GROQ_MODEL, temperature=0, max_tokens=10
+    ).with_structured_output(FetchCoinPriceDecision)
     answer_compose_llm = ChatGroq(model=settings.GROQ_MODEL, temperature=0.7)
     trinity_coin_details_llm = ChatGroq(model=settings.GROQ_MODEL, temperature=0.7)
     logger.info("LLM instances initialized successfully.")

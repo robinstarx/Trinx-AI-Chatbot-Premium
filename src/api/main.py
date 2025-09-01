@@ -9,7 +9,7 @@ import logging
 import uuid
 from src.core.config import Settings
 
-from src.agent.graph import  graph_agent
+from src.agent.graph import graph_agent
 
 
 logger = logging.getLogger(__name__)
@@ -36,16 +36,16 @@ class ChatRequest(BaseModel):
     session_id: str | None = None
     query: str
 
+
 class ChatResponse(BaseModel):
     session_id: str
     answer_markdown: str
 
 
-
 @app.post(settings.API_URL, response_model=ChatResponse)
 async def chat_premium(request: ChatRequest):
     """
-    Chat endpoint that takes session_id & query, 
+    Chat endpoint that takes session_id & query,
     and returns the chatbot's markdown answer.
     """
     try:
@@ -60,13 +60,15 @@ async def chat_premium(request: ChatRequest):
         # Call LangGraph Agent
         res = graph_agent.invoke(
             {"messages": [HumanMessage(content=query)]},
-            config={"configurable": {"thread_id": session_id}}
+            config={"configurable": {"thread_id": session_id}},
         )
-        answer = next((m for m in reversed(res["messages"]) if isinstance(m, AIMessage)), None)
-        
+        answer = next(
+            (m for m in reversed(res["messages"]) if isinstance(m, AIMessage)), None
+        )
+
         if not answer:
             raise HTTPException(status_code=500, detail="No AI response generated")
-            
+
         logger.info(f"[Session: {session_id}] Answer: {answer.content[:100]}...")
 
         return ChatResponse(
@@ -77,6 +79,7 @@ async def chat_premium(request: ChatRequest):
     except Exception as e:
         logger.error(f"Error in chat-premium endpoint: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
+
 
 if __name__ == "__main__":
     # Open tunnel on port 8000

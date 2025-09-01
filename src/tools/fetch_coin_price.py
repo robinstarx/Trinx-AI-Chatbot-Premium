@@ -5,10 +5,12 @@ from langchain_core.tools import tool
 
 logger = logging.getLogger(__name__)
 
+
 @tool
 def fetch_coin_price_tool(symbol: str, vs: str = "USDT") -> dict:
     """Fetch real-time coin price from Binance API."""
     return get_coin_price(symbol, vs)
+
 
 def get_coin_price(symbol: str, vs: str = "USDT") -> dict:
     """

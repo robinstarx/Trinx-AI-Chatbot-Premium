@@ -12,3 +12,4 @@ wheels/
 .env
 .vscode
 .python-version
+graph_agent.png

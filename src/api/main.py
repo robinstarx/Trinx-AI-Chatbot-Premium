@@ -39,8 +39,17 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     session_id: str
-    answer_markdown: str
+    response: str
 
+@app.get("/check-health", tags=["health"])
+async def health_check():
+    """
+    Health check endpoint.
+
+    This endpoint can be used to verify that the API is running and responsive.
+    It returns a simple JSON response indicating the status.
+    """
+    return {"status": "i'm alive and healthy"}
 
 @app.post(settings.API_URL, response_model=ChatResponse)
 async def chat_premium(request: ChatRequest):
@@ -73,7 +82,7 @@ async def chat_premium(request: ChatRequest):
 
         return ChatResponse(
             session_id=session_id,
-            answer_markdown=answer.content,
+            response=answer.content,
         )
 
     except Exception as e:
@@ -83,8 +92,8 @@ async def chat_premium(request: ChatRequest):
 
 if __name__ == "__main__":
     # Open tunnel on port 8000
-    public_url = ngrok.connect(8000)
-    print(f"✅ Public URL for API: {public_url}")
+    # public_url = ngrok.connect(8000)
+    # print(f"✅ Public URL for API: {public_url}")
 
     # Run FastAPI
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

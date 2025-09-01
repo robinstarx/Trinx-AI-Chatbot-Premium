@@ -12,20 +12,18 @@ dependencies = [
     "langchain-groq>=0.3.6",
     "langchain-tavily>=0.2.11",
     "langgraph>=0.5.4",
-    "ngrok>=1.5.1",
     "pydantic>=2.11.7",
-    "pyngrok>=7.3.0",
     "python-dotenv>=1.1.1",
     "pyyaml>=6.0.2",
-    "ruff>=0.12.5",
-    "streamlit>=1.47.1",
     "uvicorn>=0.35.0",
 ]
 
 [dependency-groups]
 dev = [
+    "pyngrok>=7.3.0",
     "pytest>=8.4.1",
     "ruff>=0.12.5",
+    "streamlit>=1.47.1",
 ]
 
 [build-system]

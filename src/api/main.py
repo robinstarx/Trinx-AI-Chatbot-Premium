@@ -49,7 +49,7 @@ async def health_check():
     This endpoint can be used to verify that the API is running and responsive.
     It returns a simple JSON response indicating the status.
     """
-    return {"status": "i'm alive and healthy"}
+    return {"status": "I'm alive and healthy"}
 
 @app.post(settings.API_URL, response_model=ChatResponse)
 async def chat_premium(request: ChatRequest):

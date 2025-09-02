@@ -7,16 +7,16 @@ settings = Settings()
 
 client = TestClient(app)
 
-# def test_api_health():
-#     """
-#     Tests the /health endpoint.
+def test_api_health():
+    """
+    Tests the /health endpoint.
 
-#     Verifies that the endpoint returns a 200 OK status and the expected
-#     JSON response: `{"status": "healthy"}`.
-#     """
-#     response = client.get("/health")
-#     assert response.status_code == 200
-#     assert response.json() == {"status": "healthy"}
+    Verifies that the endpoint returns a 200 OK status and the expected
+    JSON response: `{"status": "healthy"}`.
+    """
+    response = client.get("/check-health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "I'm alive and healthy"}
 
 def test_hr_qa_service_route():
    

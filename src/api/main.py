@@ -1,6 +1,7 @@
 # app/main.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+
 # from pyngrok import ngrok
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,6 +42,7 @@ class ChatResponse(BaseModel):
     session_id: str
     response: str
 
+
 @app.get("/check-health", tags=["health"])
 async def health_check():
     """
@@ -50,6 +52,7 @@ async def health_check():
     It returns a simple JSON response indicating the status.
     """
     return {"status": "I'm alive and healthy"}
+
 
 @app.post(settings.API_URL, response_model=ChatResponse)
 async def chat_premium(request: ChatRequest):

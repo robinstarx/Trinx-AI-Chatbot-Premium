@@ -61,35 +61,29 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: trinx-chat
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "."
-          target: "/tmp/github_workspace"
           script: |
             set -e
             export PATH=$HOME/.local/bin:$PATH
             source /var/www/alpha/.venv/bin/activate
-            
             # Variables
             RELEASE_DIR="/var/www/alpha_releases/release_$(date +%s)"
             APP_SYMLINK="/var/www/alpha"
-            
+
             # Create new release folder
             mkdir -p $RELEASE_DIR
-            
-            # Copy files from the transferred workspace
-            rsync -avz --exclude='.git' /tmp/github_workspace/ $RELEASE_DIR/
-            
-            # Clean up the temp workspace
-            rm -rf /tmp/github_workspace
-            
+
+            # Copy code from GitHub to VPS
+            rsync -avz --exclude='.git' ./ $RELEASE_DIR
+
             # Install dependencies inside release folder
             cd $RELEASE_DIR
             uv sync --frozen
-            
+
             # Update symlink for zero downtime
             ln -sfn $RELEASE_DIR $APP_SYMLINK
-            
+
             # Restart app service
             sudo systemctl restart alpha.service
-            
+
             echo "✅ Deployment complete"
 

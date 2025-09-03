@@ -99,4 +99,4 @@ if __name__ == "__main__":
     # print(f"✅ Public URL for API: {public_url}")
 
     # Run FastAPI
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8008)

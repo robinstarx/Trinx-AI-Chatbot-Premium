@@ -63,7 +63,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -e
-
+            export PATH=$HOME/.local/bin:$PATH
             # Ensure uv is installed on VPS
             if ! command -v uv &> /dev/null; then
               pip install --user uv

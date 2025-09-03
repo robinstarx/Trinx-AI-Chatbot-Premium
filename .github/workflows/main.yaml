@@ -1,0 +1,93 @@
+name: CI/CD Pipeline 
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    env:   # secrets & vars available for pytest
+      GROQ_MODEL: ${{ secrets.GROQ_MODEL }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+      LANGSMITH_ENDPOINT: ${{ secrets.LANGSMITH_ENDPOINT }}
+      LANGSMITH_PROJECT: ${{ secrets.LANGSMITH_PROJECT }}
+      Tavily_API_KEY: ${{ secrets.Tavily_API_KEY }}
+      SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+      CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv sync --all-extras
+
+      - name: Lint code with Ruff
+        run: uv run ruff check .
+
+      - name: Run tests with pytest
+        run: uv run pytest -v
+
+  deploy:
+  name: Deploy to VPS
+  runs-on: ubuntu-latest
+  needs: build-and-test
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: trinx-chat
+        key: ${{ secrets.VPS_SSH_KEY }}
+        script: |
+          set -e
+
+          # Ensure uv is installed on VPS
+          if ! command -v uv &> /dev/null; then
+            pip install --user uv
+          fi
+
+          # Variables
+          RELEASE_DIR="/var/www/alpha_releases/release_$(date +%s)"
+          APP_SYMLINK="/var/www/alpha"
+
+          # Create new release folder
+          mkdir -p $RELEASE_DIR
+
+          # Copy code from GitHub to VPS
+          rsync -avz --exclude='.git' ./ $RELEASE_DIR
+
+          # Install dependencies inside release folder
+          cd $RELEASE_DIR
+          uv sync --frozen
+
+          # Update symlink for zero downtime
+          ln -sfn $RELEASE_DIR $APP_SYMLINK
+
+          # Restart app service
+          sudo systemctl restart alpha.service
+
+          echo "✅ Deployment complete"
+

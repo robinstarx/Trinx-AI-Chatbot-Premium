@@ -64,11 +64,7 @@ jobs:
           script: |
             set -e
             export PATH=$HOME/.local/bin:$PATH
-            # Ensure uv is installed on VPS
-            if ! command -v uv &> /dev/null; then
-              pip install --user uv
-            fi
-
+            source /var/www/alpha/.venv/bin/activate
             # Variables
             RELEASE_DIR="/var/www/alpha_releases/release_$(date +%s)"
             APP_SYMLINK="/var/www/alpha"

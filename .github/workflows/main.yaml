@@ -74,7 +74,7 @@ jobs:
 
             # Copy code from GitHub to VPS
             rsync -avz --exclude='.git' ./ $RELEASE_DIR
-
+            ls -laR $RELEASE_DIR
             # Install dependencies inside release folder
             cd $RELEASE_DIR
             uv sync --frozen

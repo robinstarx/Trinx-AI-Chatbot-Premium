@@ -58,9 +58,9 @@ jobs:
       - name: Create Release Directory and Copy Files
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.YOUR_HOST }}
-          username: ${{ secrets.YOUR_USERNAME }}
-          key: ${{ secrets.YOUR_KEY }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
           # Define RELEASE_DIR here. scp-action will create the target directory.
           # Note: We must escape the $ for the command to run correctly.

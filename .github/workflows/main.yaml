@@ -77,6 +77,7 @@ jobs:
             # Use the run number and attempt to find the release directory
             RELEASE_DIR="/var/www/alpha_releases/release_${{ github.run_number }}_${{ github.run_attempt }}"
             APP_SYMLINK="/var/www/alpha"
+            VENV_DIR="/var/www/alpha/.venv/bin" # Define the virtual environment's bin directory
             
             echo "Activating release in: $RELEASE_DIR"
             
@@ -85,7 +86,8 @@ jobs:
             
             # Install dependencies inside the new release folder
             cd $RELEASE_DIR
-            uv sync --frozen
+             # Use the explicit path to uv
+            $VENV_DIR/uv sync --frozen
             
             # Update symlink for zero downtime
             ln -sfn $RELEASE_DIR $APP_SYMLINK

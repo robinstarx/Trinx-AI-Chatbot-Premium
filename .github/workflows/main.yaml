@@ -95,7 +95,7 @@ jobs:
             ln -sfn $RELEASE_DIR $APP_SYMLINK
             
             # Restart app service
-            sudo systemctl restart alpha.service
+            systemctl restart alpha.service
             
             echo "✅ Deployment complete"
 

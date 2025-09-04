@@ -74,6 +74,7 @@ jobs:
           port: 22
           script: |
             set -e
+            export PATH="$HOME/.local/bin:$PATH"
             # Use the run number and attempt to find the release directory
             RELEASE_DIR="/var/www/alpha_releases/release_${{ github.run_number }}_${{ github.run_attempt }}"
             APP_SYMLINK="/var/www/alpha"

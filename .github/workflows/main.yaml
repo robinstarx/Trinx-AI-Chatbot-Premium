@@ -55,35 +55,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Create Release Directory and Copy Files
+        uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: trinx-chat
-          key: ${{ secrets.VPS_SSH_KEY }}
+          host: ${{ secrets.YOUR_HOST }}
+          username: ${{ secrets.YOUR_USERNAME }}
+          key: ${{ secrets.YOUR_KEY }}
+          port: 22
+          # Define RELEASE_DIR here. scp-action will create the target directory.
+          # Note: We must escape the $ for the command to run correctly.
+          source: "." # This is your repo code
+          target: "/var/www/alpha_releases/release_$(date +%s)"
+      
+      - name: Install Dependencies and Activate Release
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.YOUR_HOST }}
+          username: ${{ secrets.YOUR_USERNAME }}
+          key: ${{ secrets.YOUR_KEY }}
+          port: 22
           script: |
             set -e
-            export PATH=$HOME/.local/bin:$PATH
-            source /var/www/alpha/.venv/bin/activate
-            # Variables
-            RELEASE_DIR="/var/www/alpha_releases/release_$(date +%s)"
+            # Find the newest release directory
+            RELEASE_DIR=$(ls -dt /var/www/alpha_releases/release_* | head -n 1)
             APP_SYMLINK="/var/www/alpha"
-
-            # Create new release folder
-            mkdir -p $RELEASE_DIR
-
-            # Copy code from GitHub to VPS
-            rsync -avz --exclude='.git' ./ $RELEASE_DIR
-            ls -laR $RELEASE_DIR
-            # Install dependencies inside release folder
+            
+            echo "Activating release in: $RELEASE_DIR"
+            
+            # Activate virtual environment
+            source /var/www/alpha/.venv/bin/activate
+            
+            # Install dependencies inside the new release folder
             cd $RELEASE_DIR
             uv sync --frozen
-
+            
             # Update symlink for zero downtime
             ln -sfn $RELEASE_DIR $APP_SYMLINK
-
+            
             # Restart app service
             sudo systemctl restart alpha.service
-
+            
             echo "✅ Deployment complete"
 

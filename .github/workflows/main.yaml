@@ -87,8 +87,7 @@ jobs:
             # Install 'uv' with pip
             pip install uv
 
-            source .venv/bin/activate
-             # Use the explicit path to uv
+
             uv sync --frozen
             
             # Update symlink for zero downtime

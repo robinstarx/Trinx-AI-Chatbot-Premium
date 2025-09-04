@@ -58,14 +58,12 @@ jobs:
       - name: Create Release Directory and Copy Files
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
+          host: ${{ secrets.YOUR_HOST }}
+          username: ${{ secrets.YOUR_USERNAME }}
+          key: ${{ secrets.YOUR_KEY }}
           port: 22
-          # Define RELEASE_DIR here. scp-action will create the target directory.
-          # Note: We must escape the $ for the command to run correctly.
-          source: "." # This is your repo code
-          target: "/var/www/alpha_releases/release_$(date +%s)"
+          source: "."
+          target: "/var/www/alpha_releases/release_${{ github.run_number }}_${{ github.run_attempt }}" # Use a consistent, non-dynamic path for scp-action
       
       - name: Install Dependencies and Activate Release
         uses: appleboy/ssh-action@v1.0.3
@@ -76,8 +74,8 @@ jobs:
           port: 22
           script: |
             set -e
-            # Find the newest release directory
-            RELEASE_DIR=$(ls -dt /var/www/alpha_releases/release_* | head -n 1)
+            # Use the run number and attempt to find the release directory
+            RELEASE_DIR="/var/www/alpha_releases/release_${{ github.run_number }}_${{ github.run_attempt }}"
             APP_SYMLINK="/var/www/alpha"
             
             echo "Activating release in: $RELEASE_DIR"

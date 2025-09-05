@@ -94,5 +94,6 @@ jobs:
             
             # Restart app service
             sudo systemctl restart alpha.service
+            sudo systemctl daemon-reload
             
             echo "✅ Deployment complete"

@@ -19,10 +19,10 @@ def test_api_health():
     assert response.json() == {"status": "I'm alive and healthy"}
 
 
-def test_hr_qa_service_route():
+def test_chat_premium_route():
     data = {
         "session_id": "1001",
-        "query": "what is the pirce of the BTC?",
+        "prompt": "what is the pirce of the BTC?",
     }
     response = client.post(settings.API_URL, json=data)
     assert response.status_code == 200

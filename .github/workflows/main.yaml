@@ -87,7 +87,6 @@ jobs:
             # Install 'uv' with pip
             pip install uv
 
-
             uv sync --frozen
             
             # Update symlink for zero downtime

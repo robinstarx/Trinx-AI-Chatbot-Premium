@@ -35,7 +35,7 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     session_id: str | None = None
-    query: str
+    prompt: str
 
 
 class ChatResponse(BaseModel):
@@ -62,7 +62,7 @@ async def chat_premium(request: ChatRequest):
     """
     try:
         session_id = request.session_id or str(uuid.uuid4())
-        query = request.query.strip()
+        query = request.prompt.strip()
 
         if not query:
             raise HTTPException(status_code=400, detail="Query cannot be empty.")

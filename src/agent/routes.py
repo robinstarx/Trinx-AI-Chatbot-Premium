@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 # ── Routing helpers ─────────────────────────────────────────────────
 def route_intent(
     st: AgentState,
-) -> Literal["fetch_price", "web", "answer", "trinity_coin_details", "end"]:
+) -> Literal["fetch_price", "web", "answer", "trinity_coin_details"]:
     route = st["route"]
     logger.info(f"Routing from router: {route}")
     return route

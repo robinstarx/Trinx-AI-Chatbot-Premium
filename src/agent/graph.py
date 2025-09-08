@@ -35,7 +35,6 @@ workflow.add_conditional_edges(
         "web": "search.news",
         "answer": "answer.compose",
         "trinity_coin_details": "trinity_coin_details",
-        "end": END,
     },
 )
 

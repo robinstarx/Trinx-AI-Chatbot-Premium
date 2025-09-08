@@ -51,62 +51,6 @@ def query_intent_router(state: AgentState) -> AgentState:
             "messages": new_msgs,
             "route": decision.route,
         }
-
-        if decision.route == "end":
-            if decision.reply:
-                response["messages"] = new_msgs + [AIMessage(content=decision.reply)]
-                logger.info("Exiting router_node")
-                return response
-            user_msg = query.lower().strip()
-
-            # Predefined response variations
-            smalltalk_responses = {
-                "what is trinx ai": [
-                    "TrinX AI is your intelligent assistant built inside the Trinity Coin ecosystem. I’m here to guide you through crypto, blockchain, coding, math, and even the latest news.",
-                    "TrinX AI is an all-in-one assistant designed to help you explore Trinity Coin, understand crypto and blockchain, solve coding and math problems, and stay updated with news.",
-                ],
-                "who are you": [
-                    "I’m TrinX AI, your personal assistant for Trinity Coin, crypto, blockchain, coding, math, and news.",
-                    "I’m TrinX AI, an AI assistant created to help you with everything from crypto and blockchain to math, coding, and current events.",
-                ],
-                "who you": [
-                    "I’m TrinX AI, your assistant for Trinity Coin and much more.",
-                    "I’m TrinX AI, here to help you with crypto, blockchain, coding, math, and the latest news.",
-                ],
-                "hi": [
-                    "Hello and welcome! I’m TrinX AI, your all-in-one assistant. Whether you’re curious about Trinity Coin, exploring the world of crypto and blockchain, brushing up on coding or math, or staying updated with the latest news, I’ve got you covered. How can I assist you today?"
-                ],
-                "how are you": [
-                    "I’m doing great, thanks for asking! I’m always ready to help you with Trinity Coin, crypto, coding, math, or the latest news. How are you doing today?",
-                    "I’m running smoothly and ready to assist. How are you feeling today?",
-                ],
-                "what are you up to": [
-                    "I’m here, focused on helping you with anything you need—Trinity Coin, crypto, blockchain, coding, math, or news. What’s on your mind?",
-                    "Right now, I’m waiting to help you explore crypto, answer math or coding questions, or share the latest updates. What would you like to start with?",
-                ],
-                "what's up": [
-                    "Not much, just here and ready to assist with anything from Trinity Coin to coding and news. What’s up with you?",
-                    "I’m all set to help you out with crypto, blockchain, coding, math, or the latest updates. What’s up on your end?",
-                ],
-            }
-
-            # Match a response set (fallback = generic intro)
-            replies = None
-            for key, variations in smalltalk_responses.items():
-                if key in user_msg:
-                    replies = variations
-                    break
-
-            if not replies:
-                replies = [
-                    "Hello! I’m TrinX AI, your all-in-one assistant for Trinity Coin, crypto, blockchain, coding, math, and news. How can I help you today?"
-                ]
-
-            # Attach multiple possible AI responses
-            response["messages"] = new_msgs + [
-                AIMessage(content=msg) for msg in replies
-            ]
-
         logger.info("Exiting router_node")
         return response
     except Exception as e:

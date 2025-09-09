@@ -1451,6 +1451,7 @@ dependencies = [
     { name = "pydantic" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
+    { name = "redis" },
     { name = "uvicorn" },
 ]
 
@@ -1475,6 +1476,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.11.7" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "pyyaml", specifier = ">=6.0.2" },
+    { name = "redis", specifier = ">=6.4.0" },
     { name = "uvicorn", specifier = ">=0.35.0" },
 ]
 

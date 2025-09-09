@@ -49,7 +49,7 @@ build a secure, intelligent, and community-driven future in DeFi.
 
 
 class QueryDecision(BaseModel):
-    route: Literal["fetch_price", "web", "answer", "trinity_coin_details",]
+    route: Literal["fetch_price", "web", "answer", "trinity_coin_details"]
     reply: str | None = Field(None, description="")
 
 

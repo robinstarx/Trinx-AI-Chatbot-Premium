@@ -11,10 +11,10 @@ from src.core.state import AgentState
 from src.agent.routes import route_intent
 from langgraph.checkpoint.memory import MemorySaver
 
-# ── LOGGING ─────────────────────────────────────────────────────────────
+# ── LOGGING ────────
 logger = logging.getLogger(__name__)
 
-# ── Build graph ─────────────────────────────────────────────────────
+# ── Build graph ───────
 logger.info("Building agent graph...")
 
 workflow = StateGraph(AgentState)
@@ -46,4 +46,4 @@ workflow.add_edge("answer.compose", END)
 
 logger.info("Compiling agent graph...")
 graph_agent = workflow.compile(checkpointer=MemorySaver())
-logger.info("Agent graph compiled successfully.")
+logger.info("Agent graph compiled successfully")

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
-from typing import List, Literal, TypedDict
+from typing import List, Literal, TypedDict,Annotated
 from langchain_core.messages import BaseMessage
+from langgraph.graph.message import add_messages
 
 # Trinity Coin AI Knowledge Base
 TRINITY_KNOWLEDGE_BASE = """
@@ -48,8 +49,8 @@ build a secure, intelligent, and community-driven future in DeFi.
 
 
 class QueryDecision(BaseModel):
-    route: Literal["fetch_price", "web", "answer", "trinity_coin_details", "end"]
-    reply: str | None = Field(None, description="Filled only when route == 'end'")
+    route: Literal["fetch_price", "web", "answer", "trinity_coin_details",]
+    reply: str | None = Field(None, description="")
 
 
 class FetchCoinPriceDecision(BaseModel):
@@ -59,10 +60,10 @@ class FetchCoinPriceDecision(BaseModel):
 
 # ── Shared state type ────────────────────────────────────────────────
 class AgentState(TypedDict, total=False):
-    messages: List[BaseMessage]
-    route: Literal["web", "fetch_price", "answer", "trinity_coin_details", "end"]
+    messages: Annotated[List[BaseMessage], add_messages]  
+    route: Literal["web", "fetch_price", "answer", "trinity_coin_details"]
     previous_route: Literal[
-        "web", "fetch_price", "answer", "trinity_coin_details", "end"
+        "web", "fetch_price", "answer", "trinity_coin_details"
     ]
     web_results: str
     price: float

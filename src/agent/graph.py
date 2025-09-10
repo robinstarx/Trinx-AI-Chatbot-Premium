@@ -1,12 +1,10 @@
 import logging
 from langgraph.graph import StateGraph, END
-from src.agent.nodes import (
-    query_intent_router,
-    web_search_node,
-    fetch_spot_price,
-    compose_answer_node,
-    trinity_coin_deatils_node,
-)
+from src.agent.nodes.query_router import query_router_node
+from src.agent.nodes.web_search import web_search_node
+from src.agent.nodes.fetch_price import fetch_price_node
+from src.agent.nodes.trinity_details import get_trinity_details_node
+from src.agent.nodes.answer_compose import compose_answer_node
 from src.core.state import AgentState
 from src.agent.routes import route_intent
 from langgraph.checkpoint.memory import MemorySaver
@@ -19,10 +17,10 @@ logger.info("Building agent graph...")
 
 workflow = StateGraph(AgentState)
 
-workflow.add_node("route.intent", query_intent_router)
+workflow.add_node("route.intent", query_router_node)
 workflow.add_node("search.news", web_search_node)
-workflow.add_node("fetch.price", fetch_spot_price)
-workflow.add_node("trinity_coin_details", trinity_coin_deatils_node)
+workflow.add_node("fetch.price", fetch_price_node)
+workflow.add_node("trinity_coin_details", get_trinity_details_node)
 workflow.add_node("answer.compose", compose_answer_node)
 
 workflow.set_entry_point("route.intent")

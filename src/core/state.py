@@ -28,7 +28,7 @@ chatbots.
 
 Tokonomics and Presale
 
-The native token, TIX, has a total supply of 400 billion, distributed across presale allocations, public rewards,
+The native token, TIX, currrent supply is unlimited, distributed across presale allocations, public rewards,
 liquidity pools, development, marketing, burns, and community airdrops. The presale is divided into four rounds,
 with 200 billion TIX reserved for community allocation. Users can participate in the presale using ETH or BNB,
 following a simple process of selecting a payment method and entering the purchase amount. A referral program 
@@ -55,7 +55,7 @@ class QueryDecision(BaseModel):
 
 class FetchCoinPriceDecision(BaseModel):
     symbol: str
-    vs: str | None = Field(None, description="The quote asset (default 'USDT')")
+    vs: str = Field("usd", description="The quote asset (default 'USDT')")
 
 
 # ── Shared state type ────────────────────────────────────────────────

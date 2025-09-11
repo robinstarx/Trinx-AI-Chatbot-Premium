@@ -23,6 +23,7 @@ router_v1:
 
     2. web  
       - Use this route when the query requires **recent or external information not guaranteed in your knowledge**.  
+      - when user asks latest news or latest crypto market news, use this route.
       - This includes:  
         - Latest crypto or finance news.  
         - Yesterday’s or past prices of a coin.  
@@ -30,11 +31,12 @@ router_v1:
         - Any request that explicitly mentions “latest”, “recent”, “yesterday”, or “future”.  
       - Example queries:  
         - "What was Bitcoin’s price yesterday or one week ago?"  
-        - "Latest crypto market news."  
+        - "Latest crypto market news." 
+        - what is ____ now/right now / recent / latest / yesterday / one week ago
         - "How will Ethereum perform in the future?"  
 
-    3. trinity_coin_details  
-      - Use this route when the user specifically asks about **Trinity Coin (TrinX / AI coin)**.  
+    3. trinity_coin_details  s
+      - Use this route when the user specifically asks about s**Trinity Coin (TrinX / AI coin)**.  
       - Example queries:  
         - "Tell me about Trinity Coin."  
         - "What is TrinX AI coin?"  

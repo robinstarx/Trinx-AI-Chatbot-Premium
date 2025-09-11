@@ -29,14 +29,20 @@ def compose_answer_node(state: AgentState) -> AgentState:
         )
         logger.info(f"Answer node query: {user_q}")
 
+        
+        messages = state.get("messages", [])
+        
+        recent_messages = messages[-10:] if len(messages) > 10 else messages
         chat_history = "\n".join(
             f"{'User' if isinstance(m, HumanMessage) else 'AI'}: {m.content}"
-            for m in state["messages"]
+            for m in recent_messages
         )
-        logger.info(f"Chat history: {chat_history}")
+        
+        is_followup = len([m for m in messages if isinstance(m, HumanMessage)]) > 1
+        
+        logger.info(f"Chat history length: {len(messages)} messages")
+        logger.info(f"Is follow-up question: {is_followup}")
 
-        # ✨ ROUTE-SPECIFIC CONTEXT INCLUSION
-        # Only include context that's relevant to the current route
         last_route = state.get("previous_route", "")
         parts = []
 
@@ -56,17 +62,22 @@ def compose_answer_node(state: AgentState) -> AgentState:
                 parts.append("Trinity Coin AI:\n" + trinity_ctx)
 
         context = "\n\n".join(parts) if parts else "No external context available."
+        
+        
+        enhanced_prompt = answer_prompt["answer_node_v1"]["system"].format(
+            context=context, 
+            user_q=user_q
+        )
+        
+        
+        if is_followup and len(recent_messages) > 2:
+            enhanced_prompt += f"\n\n### Previous Conversation Context:\n{chat_history}"
+        
         logger.info(f"Answer node context prepared for route: {last_route}")
 
-        answer = answer_compose_llm.invoke(
-            [
-                HumanMessage(
-                    content=answer_prompt["answer_node_v1"]["system"].format(
-                        context=context, user_q=user_q
-                    )
-                )
-            ]
-        ).content
+        answer = answer_compose_llm.invoke([
+            HumanMessage(content=enhanced_prompt)
+        ]).content
 
         logger.info("Generated answer.")
         logger.info("Exiting answer_node")

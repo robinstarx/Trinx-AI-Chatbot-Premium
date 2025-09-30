@@ -3,6 +3,7 @@
 import logging
 
 from langchain_core.messages import HumanMessage, AIMessage
+from src.agent.nodes import file_upload_qa
 from src.core.llm_routes import answer_compose_llm
 from src.core.state import AgentState
 
@@ -60,6 +61,10 @@ def compose_answer_node(state: AgentState) -> AgentState:
             trinity_ctx = state.get("trinity_info", "").strip()
             if trinity_ctx:
                 parts.append("Trinity Coin AI:\n" + trinity_ctx)
+        elif last_route == "file_upload_qa" and state.get("file_upload_cxt"):
+            file_upload_ctx = state.get("file_upload_cxt", "").strip()
+            if file_upload_ctx:
+                parts.append("File details:\n" + file_upload_ctx)
 
         context = "\n\n".join(parts) if parts else "No external context available."
         

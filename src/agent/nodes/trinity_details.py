@@ -1,13 +1,9 @@
 
-
 import logging
 
 from langchain_core.messages import HumanMessage
-from src.core.llm_routes import trinity_coin_details_llm
 from src.core.state import AgentState
-
-from src.prompts.config.prompt_import import trinity_info_prompt
-from src.core.state import TRINITY_KNOWLEDGE_BASE
+from src.rag.rag_store import rag_search_tool
 
 
 
@@ -29,23 +25,13 @@ def get_trinity_details_node(state: AgentState) -> AgentState:
         )
         logger.info(f"Trinity coin details query: {query}")
 
-        trinity_answer = trinity_coin_details_llm.invoke(
-            [
-                (
-                    "system",
-                    trinity_info_prompt["trinity_info_node_v1"]["system"].format(
-                        TRINITY_KNOWLEDGE_BASE=TRINITY_KNOWLEDGE_BASE
-                    ),
-                ),
-                ("user", query),
-            ]
-        )
+        trinity_answer = rag_search_tool.invoke({"query": query, "source": "trinity"})
         logger.info("Generated answer.")
-        logger.info(f"Answer: {trinity_answer.content}")
+        logger.info(f"Answer: {trinity_answer}")
         logger.info("Exiting trinity_coin_deatils_node")
         return {
             **state,
-            "trinity_info": trinity_answer.content,
+            "trinity_info": trinity_answer,
             "route": "answer",
             "previous_route": "trinity_coin_details",
         }

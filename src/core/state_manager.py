@@ -12,6 +12,7 @@ def clear_context_fields(state: AgentState) -> AgentState:
         "price": 0.0,
         "trinity_info": "",
         "previous_route": "",
+        "file_upload_cxt": "",
     }
     logger.info("Context fields cleared for new query")
     return cleared_state

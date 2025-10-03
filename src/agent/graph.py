@@ -9,6 +9,10 @@ from src.agent.nodes.file_upload_qa import file_upload_qa_node
 from src.core.state import AgentState
 from src.agent.routes import route_intent
 from langgraph.checkpoint.memory import MemorySaver
+# from langgraph.checkpoint.redis import RedisSaver
+
+# checkpointer = RedisSaver(redis_url="redis://localhost:6379")
+checkpointer = MemorySaver()
 
 # ── LOGGING ────────
 logger = logging.getLogger(__name__)
@@ -47,5 +51,5 @@ workflow.add_edge("trinity_coin_details", "answer.compose")
 workflow.add_edge("answer.compose", END)
 
 logger.info("Compiling agent graph...")
-graph_agent = workflow.compile(checkpointer=MemorySaver())
+graph_agent = workflow.compile(checkpointer=checkpointer)
 logger.info("Agent graph compiled successfully")

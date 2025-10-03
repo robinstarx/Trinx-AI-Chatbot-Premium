@@ -22,7 +22,9 @@ def test_api_health():
 def test_chat_premium_route():
     data = {
         "session_id": "1001",
+        "user_id": "1001",
         "prompt": "what is the pirce of the BTC?",
+        "is_file_upload": False,
     }
     response = client.post(settings.API_URL, json=data)
     assert response.status_code == 200

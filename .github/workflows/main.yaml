@@ -25,6 +25,8 @@ jobs:
       Tavily_API_KEY: ${{ secrets.Tavily_API_KEY }}
       SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
       CORS_ORIGINS: ${{ vars.CORS_ORIGINS }}
+      PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - name: Check out code

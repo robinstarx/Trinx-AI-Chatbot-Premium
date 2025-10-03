@@ -18,11 +18,11 @@ class Settings(BaseSettings):
     LANGSMITH_API_KEY: str = os.getenv("LANGSMITH_API_KEY")
     LANGSMITH_PROJECT: str = os.getenv("LANGSMITH_PROJECT")
     SERPER_API_KEY: str = os.getenv("SERPER_API_KEY")
-    TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY")
-
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
     # LLM settings
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
     GROQ_MODEL: str = os.getenv("GROQ_MODEL")
+    PINECONE_API_KEY:str = os.getenv("PINECONE_API_KEY")
 
     # new style config
     model_config = ConfigDict(
@@ -40,8 +40,10 @@ try:
     os.environ["LANGSMITH_API_KEY"] = settings.LANGSMITH_API_KEY
     os.environ["LANGSMITH_PROJECT"] = settings.LANGSMITH_PROJECT
     os.environ["SERPER_API_KEY"] = settings.SERPER_API_KEY
-    os.environ["TAVILY_API_KEY"] = settings.TAVILY_API_KEY
     os.environ["GROQ_API_KEY"] = settings.GROQ_API_KEY
+    os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY
+    os.environ["PINECONE_API_KEY"] = settings.PINECONE_API_KEY
+    
     logger.info("Environment variables loaded successfully.")
 except Exception as e:
     logger.error(f"Error loading environment variables: {e}")

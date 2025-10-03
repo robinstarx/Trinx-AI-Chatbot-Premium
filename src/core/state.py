@@ -61,11 +61,16 @@ class FetchCoinPriceDecision(BaseModel):
 # ── Shared state type ────────────────────────────────────────────────
 class AgentState(TypedDict, total=False):
     messages: Annotated[List[BaseMessage], add_messages]  
-    route: Literal["web", "fetch_price", "answer", "trinity_coin_details"]
+    route: Literal["web", "fetch_price", "answer", "trinity_coin_details", "file_upload_qa"]
     previous_route: Literal[
-        "web", "fetch_price", "answer", "trinity_coin_details"
+        "web", "fetch_price", "answer", "trinity_coin_details", "file_upload_qa"
     ]
     web_results: str
     price: float
+    file_upload_cxt: str
+    user_id: str
+    is_file_upload: bool
+    rag_cxt: str
     trinity_info: str
+    pending_file_query: bool
     knowledge_base: str

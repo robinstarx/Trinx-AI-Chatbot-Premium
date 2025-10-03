@@ -35,12 +35,16 @@ router_v1:
         - what is ____ now/right now / recent / latest / yesterday / one week ago
         - "How will Ethereum perform in the future?"  
 
-    3. trinity_coin_details  s
-      - Use this route when the user specifically asks about s**Trinity Coin (TrinX / AI coin)**.  
+    3. trinity_coin_details
+      - Use this route when the user asks about **Trinity Coin, TrinX, Trinity AI, or anything related to this project**.  
+      - This includes questions about the Trinity ecosystem, features, technology, team, or any Trinity-related information.
       - Example queries:  
         - "Tell me about Trinity Coin."  
         - "What is TrinX AI coin?"  
-        - "Give me all details of Trinity coin."  
+        - "What is the trinity ai coin?"
+        - "Give me all details of Trinity coin."
+        - "How does Trinity AI work?"
+        - "Trinity coin features"  
 
     4. answer  
       - Use this route when the user asks a **general knowledge or utility question** that is not about prices, news, or Trinity Coin.  

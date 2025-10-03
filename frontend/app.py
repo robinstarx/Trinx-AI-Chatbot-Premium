@@ -2,12 +2,16 @@ import streamlit as st
 from datetime import datetime, timedelta
 from uuid import uuid4
 import os
-from langchain_community.document_loaders import PyPDFLoader
+import base64
 import logging
-from src.rag.rag_store import add_docs
-from src.rag.rag_store import vector_store
-from src.agent.graph import graph_agent
+from typing import Any, Dict
+
+import requests
 from langchain_core.messages import AIMessage, HumanMessage
+
+# API Configuration
+API_BASE_URL = os.getenv("TRINX_API_BASE_URL", "http://127.0.0.1:8008")
+
 
 # Setup logger
 logging.basicConfig(level=logging.INFO)
@@ -118,97 +122,80 @@ user_query = st.chat_input(
 
 # ─── Handle File Upload (Process files when uploaded) ─────────────────
 if uploaded_files:
-    save_dir = "uploaded_files"
-    os.makedirs(save_dir, exist_ok=True)
-    
-    # Check for new files that haven't been processed yet
     current_file_names = [f.name for f in uploaded_files]
     processed_file_names = [info['filename'] for info in st.session_state.uploaded_files_info]
     
     for file in uploaded_files:
         if file.name not in processed_file_names:
             try:
-                save_path = os.path.join(save_dir, file.name)
-                with open(save_path, "wb") as f:
-                    f.write(file.getbuffer())
-
-                doc_upload = add_docs(
-                    save_path,
-                    vector_store,
-                    {"source": "upload", "filename": file.name, "user_id": st.session_state.user_id}
+                encoded_file = base64.b64encode(file.getvalue()).decode()
+                payload = {
+                    "session_id": st.session_state.thread_id,
+                    "user_id": st.session_state.user_id,
+                    "filename": file.name,
+                    "file_base64": encoded_file,
+                    "content_type": file.type,
+                }
+                response = requests.post(
+                    f"{API_BASE_URL}/api/chat-premium/upload-file",
+                    json=payload,
+                    timeout=60,
                 )
-                
-                if doc_upload:
-                    # Add to session state
-                    st.session_state.uploaded_files_info.append({
-                        "filename": file.name,
-                        "upload_time": now.strftime("%Y-%m-%d %H:%M:%S")
-                    })
-                    st.session_state.pending_file_query = True
-                    st.success(f"✅ File '{file.name}' uploaded and indexed successfully!")
-                    logger.info(f"Successfully uploaded and indexed: {file.name}")
-                else:
-                    st.warning(f"⚠️ No content extracted from {file.name}")
-                    logger.warning(f"No docs added from {file.name}")
-                    
+                response.raise_for_status()
+
+                st.session_state.uploaded_files_info.append({
+                    "filename": file.name,
+                    "upload_time": now.strftime("%Y-%m-%d %H:%M:%S")
+                })
+                st.session_state.pending_file_query = True
+                st.success(f"✅ File '{file.name}' uploaded and indexed successfully!")
+                logger.info(f"Successfully uploaded and indexed via API: {file.name}")
+
+            except requests.HTTPError as http_err:
+                st.error(f"❌ API error processing {file.name}: {http_err.response.text}")
+                logger.error(f"HTTP error processing {file.name}: {http_err}")
             except Exception as e:
-                st.error(f"❌ Error processing {file.name}: {str(e)}")
-                logger.error(f"Error processing {file.name}: {e}")
+                st.error(f"❌ Unexpected error processing {file.name}: {str(e)}")
+                logger.error(f"Unexpected error processing {file.name}: {e}")
 
 if user_query:
     user_msg = HumanMessage(content=user_query)
     
-    # Display user message
     with st.chat_message("user"):
         st.markdown(user_query)
     st.session_state.messages.append(user_msg)
 
-    # ─── Determine Query Type ─────────────────
-    pending_file_query = st.session_state.get("pending_file_query", False)
-    has_uploaded_files = len(st.session_state.uploaded_files_info) > 0
-
-    if pending_file_query:
-        is_file_upload = True
-        logger.info("Pending file query detected; routing to file_upload_qa")
-    else:
-        is_file_upload = False
-        logger.info("No pending file query; using normal routing")
-    
-    logger.info(f"Query: {user_query}")
-    logger.info(f"Has uploaded files: {has_uploaded_files}")
-    logger.info(f"Final is_file_upload flag: {is_file_upload}")
-
-    # ─── Run Graph Agent ────────────────────
     try:
-        logger.info("Invoking graph agent")
-        result = graph_agent.invoke(
-            {"messages": [user_msg]},
-            config={"configurable": {
-                "thread_id": st.session_state.thread_id,
+        response = requests.post(
+            f"{API_BASE_URL}/api/chat-premium",
+            json={
+                "prompt": user_query,
+                "session_id": st.session_state.thread_id,
                 "user_id": st.session_state.user_id,
-                "is_file_upload": is_file_upload,
-            }},
+                "is_file_upload": st.session_state.pending_file_query,
+            },
+            timeout=60,
         )
-        logger.info("Graph agent invocation successful")
+        response.raise_for_status()
+        data: Dict[str, Any] = response.json()
 
-        if pending_file_query:
+        if st.session_state.pending_file_query:
             st.session_state.pending_file_query = False
-            logger.info("Pending file query flag cleared")
 
-        ai_msg = next(
-            (m for m in reversed(result["messages"]) if isinstance(m, AIMessage)), None
-        )
-        if ai_msg:
-            with st.chat_message("assistant"):
-                st.markdown(ai_msg.content)
-            st.session_state.messages.append(ai_msg)
-            logger.info(f"AI response generated successfully")
-        else:
-            with st.chat_message("assistant"):
-                st.markdown("⚠️ No response generated.")
-            logger.warning("No response generated by the AI.")
-            
+        ai_content = data.get("response", "")
+        ai_msg = AIMessage(content=ai_content)
+
+        with st.chat_message("assistant"):
+            st.markdown(ai_content)
+        st.session_state.messages.append(ai_msg)
+        logger.info("Chat response received from API")
+
+    except requests.HTTPError as http_err:
+        error_text = http_err.response.text if http_err.response else str(http_err)
+        logger.error(f"HTTP error during chat: {error_text}")
+        with st.chat_message("assistant"):
+            st.markdown(f"❌ API Error: `{error_text}`")
     except Exception as e:
-        logger.error(f"Error invoking graph agent: {e}")
+        logger.error(f"Unexpected error during chat: {e}")
         with st.chat_message("assistant"):
             st.markdown(f"❌ Error: `{e}`")

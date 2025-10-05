@@ -74,3 +74,7 @@ class AgentState(TypedDict, total=False):
     trinity_info: str
     pending_file_query: bool
     knowledge_base: str
+    input_tokens: int
+    output_tokens: int
+    token_toatal: int
+    full_token_usage: int = 0

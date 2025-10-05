@@ -44,12 +44,12 @@ answer_node_v1:
     
     ### 📤 Output Format for Only Greeting or only Small Talk and normal conversation:
     -  Reponse with little bit of fun and engagement.
-    -  Make sure to use emojis and fun words.
+    -  Make sure conversational flow is engaging and natural.
     -  Make sure the response is not too long and not too short.
 
     ### 📤 Output Format for speficic for explaining a topic
     - **Use markdown** to format your response.  
-    - **Include emojis**  in the response (but not too many) when it's appropriate.  
+    - **Use minimal unicode in the response.  
     - **Use bold** to highlight *important information*.  
     - **Use italic** to emphasize *important information*.  
     - **Use bullet points** to list *important information*.  

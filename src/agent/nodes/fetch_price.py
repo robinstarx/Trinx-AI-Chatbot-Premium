@@ -5,7 +5,7 @@ import logging
 from langchain_core.messages import HumanMessage
 from src.core.llm_routes import coin_symbol_converter_llm
 from src.core.state import AgentState, FetchCoinPriceDecision
-
+from langchain.callbacks import get_openai_callback
 from src.tools.fetch_coin_price import fetch_coin_price_tool
 
 from src.prompts.config.prompt_import import fetch_price_prompt
@@ -26,13 +26,16 @@ def fetch_price_node(state: AgentState) -> AgentState:
             "",
         )
         logger.info(f"Price query: {query}")
-
-        coin_decision: FetchCoinPriceDecision = coin_symbol_converter_llm.invoke(
-            [
-                ("system", fetch_price_prompt["fetch_price_node_v1"]["system"]),
-                ("user", query),
-            ]
-        )
+        with get_openai_callback() as cb:
+            coin_decision: FetchCoinPriceDecision = coin_symbol_converter_llm.invoke(
+                [
+                    ("system", fetch_price_prompt["fetch_price_node_v1"]["system"]),
+                    ("user", query),
+                ]
+            )
+            print(f"Price node prompt tokens: {cb.total_tokens}")
+            state["full_token_usage"] = state.get("full_token_usage", 0) + cb.total_tokens
+            print(f"Full token usage: {state['full_token_usage']}")
         symbol = (coin_decision.symbol or "").upper()
         if not symbol or symbol == "UNKNOWN":
             price_str = "Could not determine a valid trading symbol."
@@ -55,6 +58,7 @@ def fetch_price_node(state: AgentState) -> AgentState:
             "price": price_str,
             "route": "answer",
             "previous_route": "fetch_price",
+            "full_token_usage": state["full_token_usage"],
         }
     except Exception as e:
         logger.error(f"Error in price_node: {e}")

@@ -5,7 +5,7 @@ import logging
 from langchain_core.messages import HumanMessage, AIMessage
 from src.core.llm_routes import answer_compose_llm
 from src.core.state import AgentState
-
+from langchain.callbacks import get_openai_callback
 
 from src.prompts.config.prompt_import import answer_prompt
 
@@ -79,13 +79,17 @@ def compose_answer_node(state: AgentState) -> AgentState:
         
         logger.info(f"Answer node context prepared for route: {last_route}")
 
-        answer = answer_compose_llm.invoke([
-            HumanMessage(content=enhanced_prompt)
-        ]).content
+        with get_openai_callback() as cb:
+            answer = answer_compose_llm.invoke([
+                HumanMessage(content=enhanced_prompt)
+            ]).content
+            print(f"Answer node prompt tokens: {cb.total_tokens}")
+            state["full_token_usage"] = state.get("full_token_usage", 0) + cb.total_tokens
 
         logger.info("Generated answer.")
         logger.info("Exiting answer_node")
-
+       
+        print(f"Full token usage: {state['full_token_usage']}")
         return {**state, "messages": state["messages"] + [AIMessage(content=answer)]}
     except Exception as e:
         logger.error(f"Error in answer_node: {e}")

@@ -5,7 +5,7 @@ from src.core.llm_routes import query_router_llm
 from src.core.state import AgentState, QueryDecision
 from src.core.state_manager import clear_context_fields
 from src.prompts.config.prompt_import import router_prompt
-
+from langchain.callbacks import get_openai_callback
 logger = logging.getLogger(__name__)
 
 def query_router_node(state: AgentState, config: RunnableConfig) -> AgentState:
@@ -33,15 +33,20 @@ def query_router_node(state: AgentState, config: RunnableConfig) -> AgentState:
             return response
 
         # Otherwise, use LLM routing for normal queries
-        decision: QueryDecision = query_router_llm.invoke(
-            [("system", router_prompt["router_v1"]["system"]), ("user", query)]
-        )
+        with get_openai_callback() as cb:
+            decision: QueryDecision = query_router_llm.invoke(
+                [("system", router_prompt["router_v1"]["system"]), ("user", query)]
+            )
+            print(f"Router node prompt tokens: {cb.total_tokens}")
+            state["full_token_usage"] = state.get("full_token_usage", 0) + cb.total_tokens
+            print(f"Full token usage: {state['full_token_usage']}")
         logger.info(f"Router decision: {decision.route}")
 
         response: AgentState = {
             **cleared_state,
             "messages": new_msgs,
             "route": decision.route,
+            "full_token_usage": state["full_token_usage"],
         }
         logger.info("Exiting query_router_node")
         return response

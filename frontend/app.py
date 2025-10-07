@@ -56,7 +56,7 @@ with st.sidebar:
     st.header("📁 File Upload")
     uploaded_files = st.file_uploader(
         "Upload documents", 
-        type=["pdf", "txt", "docx"], 
+        type=["pdf", "txt", "docx", "md"], 
         accept_multiple_files=True,
         help="Upload PDF, TXT, or DOCX files to ask questions about their content"
     )

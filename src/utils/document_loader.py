@@ -5,6 +5,7 @@ from langchain_community.document_loaders import (
     PyPDFLoader,
     TextLoader,
     UnstructuredWordDocumentLoader,
+    UnstructuredMarkdownLoader
 )
 from langchain.schema import Document
 
@@ -19,6 +20,7 @@ LOADER_FACTORIES: Dict[str, LoaderFactory] = {
     ".txt": lambda path: TextLoader(path, autodetect_encoding=True).load(),
     ".doc": lambda path: UnstructuredWordDocumentLoader(path).load(),
     ".docx": lambda path: UnstructuredWordDocumentLoader(path).load(),
+    ".md": lambda path: UnstructuredMarkdownLoader(path).load(),
 }
 
 

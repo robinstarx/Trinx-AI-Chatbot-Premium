@@ -23,7 +23,7 @@ def file_upload_qa_node(state: AgentState) -> AgentState:
                 "query": query,
                 "source": "upload",
                 "user_id": user_id,
-            }
+            },
         )
         logger.info(f"RAG result length: {len(rag_result)} chars")
 

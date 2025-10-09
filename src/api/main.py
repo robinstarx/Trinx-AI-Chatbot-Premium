@@ -81,6 +81,8 @@ async def chat_premium(request: ChatRequest):
         logger.info(f"[Session: {session_id}] Answer: {answer.content[:100]}...")
 
         return ChatResponse(
+            status_codes=200,
+            user_id=user_id,
             session_id=session_id,
             response=answer.content,
         )
@@ -121,7 +123,7 @@ async def upload_file(request: UploadFileRequest):
             added = add_docs(
                 file_path=str(tmp_path),
                 vector_store=vector_store,
-                metadata={"source": "upload", "filename": filename, "user_id": user_id},
+                metadata={"source": "upload", "filename": filename, "user_id": user_id, "session_id": session_id},
             )
 
             if not added:
@@ -131,6 +133,8 @@ async def upload_file(request: UploadFileRequest):
                 tmp_path.unlink(missing_ok=True)
 
         return ChatResponse(
+            status_codes=200,
+            user_id=user_id,
             session_id=session_id,
             response="File uploaded successfully",
         )

@@ -82,7 +82,7 @@ def add_docs(file_path, vector_store, metadata: dict | None = None):
 #         logger.exception("Failed to preload Trinity docs: %s", e)
 
 @tool
-def rag_search_tool(query: str, user_id: str = None, source: str = None) -> str:
+def rag_search_tool(query: str, user_id: str = None, source: str = None, session_id: str = None) -> str:
     """
     Unified RAG search tool. Provide either user_id (to search user uploads),
     or source="trinity" (to search only Trinity global docs), or neither (search all).
@@ -103,7 +103,7 @@ def rag_search_tool(query: str, user_id: str = None, source: str = None) -> str:
         elif source == "upload":
          
             logger.info(f"Searching uploaded docs with query: {query}, user_id: {user_id}")
-            docs = vector_store.similarity_search(query, k=5, filter={"source": source, "user_id": user_id}, namespace="file_upload_qa")
+            docs = vector_store.similarity_search(query, k=5, filter={"source": source, "user_id": user_id, "session_id": session_id}, namespace="file_upload_qa")
 
         if not docs:
             logger.info("No relevant documents found for query: %s", query)

@@ -29,6 +29,7 @@ def query_router_node(state: AgentState, config: RunnableConfig) -> AgentState:
                 "messages": new_msgs,
                 "route": "file_upload_qa",
                 "user_id": config["configurable"].get("user_id"),
+                "session_id": config["configurable"].get("thread_id"),
             }
             return response
 

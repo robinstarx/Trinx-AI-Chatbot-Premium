@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 try:
     load_dotenv()
     os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
-    search = GoogleSerperAPIWrapper(k=10, type="search")
+    search = GoogleSerperAPIWrapper(k=5, type="search")
     logger.info("GoogleSerperAPIWrapper initialized successfully.")
 except Exception as e:
     logger.error(f"Error initializing GoogleSerperAPIWrapper: {e}")

@@ -23,7 +23,8 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     """Unified response envelope for chat API endpoints."""
-
+    status_codes: int
+    user_id: str
     session_id: str
     response: str
 
